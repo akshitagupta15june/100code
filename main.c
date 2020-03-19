@@ -1,96 +1,95 @@
 #include<stdio.h>
-#include<malloc.h>
-struct node
+#define n 5
+int queue[n];
+int f=-1;
+int r=-1;
+void enqueue(int data)
 {
-    int data;
-    struct node *next;
-};
-struct node *top=NULL;
-struct node *push();
-struct node *pop();
-struct node *peak();
-struct node *display();
-
-struct node *push()
-{
-    struct node *newnode;
-    newnode=(struct node*)malloc(sizeof(struct node));
-    printf("\n Enter data\t");
-    scanf("%d",&newnode->data);
-    newnode->next=top;
-    top=newnode;
-}
-struct node *pop()
-{
-    int item;
-    struct node *temp;
-    temp=top;
-    item=temp->data;
-    if(top==NULL)
+    
+    if(r==n-1)
     {
-        printf("\n Stack Empty");
+        printf("\nQUEUE OVERFLOW");
+    }
+    else if(f==-1 && r==-1)
+    {
+      f=r=0;
+      queue[r]=data;
     }
     else
     {
-    top=top->next;
-    free(temp);
-    printf("\ndata which is deleted is %d",item);
+      r++;
+      queue[r]=data; 
     }
 }
-struct node *peak()
+void dequeue()
 {
-    if(top==NULL)
+    
+    if(f==-1 && r==-1)
     {
-        printf("\n Stack Empty");
+        printf("\nQUEUE UNDERFLOW");
+    }
+    else if(f==r)
+    {
+        f=r=-1;
     }
     else
     {
-        printf(" %d",top->data);
+        printf("\nItem deleted is %d ",queue[f]);
+        f++;
         
     }
 }
-struct node *display()
+void peek()
 {
-    struct node *temp;
-    temp=top;
-    if(top==NULL)
+    if(f==-1 && r==-1)
     {
-        printf("\n Stack Empty");
+        printf("\nNothing to display");
     }
-    
-    while(temp!=NULL)
+    else
     {
-        printf("\n%d ",temp->data);
-        temp=temp->next;
+        printf("\nPEAK VALUE IS  %d ",queue[f]);
+    }
+}
+void display()
+{
+    if(f==-1 && r==-1)
+    {
+        printf("\nNothing to display");
+    }
+    for(int i=f;i<=r;i++)
+    {
+        printf("%d ",queue[i]);
     }
 }
 int main()
 {
-    int ch;
+    int ch,data;
+    
     do
     {
-        printf("Enter\n1:push\n2:pop\n3:peak\n4:display\n5:(0) to exit\t");
+        printf("\nEnter following keys\n1:ENQUEUE\n2:DEQUEUE\n3:peek\n4:display\n5:(0) to exit\t");
         scanf("%d",&ch);
         switch(ch)
         {
             case 1:
-            push();
+            printf("\nEnter data\t ");
+            scanf("%d ",&data);
+            enqueue(data);
             break;
             case 2:
-            pop();
+            dequeue();
             break;
             case 3:
-            peak();
+            peek();
             break;
             case 4:
             display();
             break;
             default:
             printf("wrong choice");
-            
         }
     }
         while(ch!=0);
         ch=getchar();
-
 }
+
