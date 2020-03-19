@@ -1,78 +1,94 @@
 #include<stdio.h>
-#define n 5
-int queue[n];
-int f=-1;
-int r=-1;
-void enqueue(int data)
+#include<malloc.h>
+struct node
 {
-    
-    if(r==n-1)
+    int data;
+    struct node *next;
+};
+struct node *front=NULL;
+struct node *rear=NULL;
+struct node *enqueue(int data);
+struct node *dequeue();
+struct node *peak();
+struct node *display();
+struct node *enqueue(int data)
+{
+    struct node *newnode;
+    newnode=(struct node*)malloc(sizeof(struct node));
+    newnode->data=data;
+    newnode->next=NULL;
+    if(front==NULL && rear==NULL)
     {
-        printf("\nQUEUE OVERFLOW");
-    }
-    else if(f==-1 && r==-1)
-    {
-      f=r=0;
-      queue[r]=data;
+        front=newnode;
+        rear=newnode;
     }
     else
     {
-      r++;
-      queue[r]=data; 
+        rear->next=newnode;
+        rear=newnode;
+    }
+    
+}
+struct node *dequeue()
+{
+    struct node *temp;
+    temp=front;
+    if(front==NULL && rear==NULL)
+    {
+        printf("\n QUEUE UNDERFLOW\n");
+    }
+    else if(front==rear)
+    {
+        printf("Item deleted %d ",front->data);
+        front=NULL;
+        rear=NULL;
+    }
+    else
+    {
+       printf("\n The item which is deleted is %d ",temp->data);
+       front=front->next;
+       free(temp);
     }
 }
-void dequeue()
+struct node *peak()
 {
-    
-    if(f==-1 && r==-1)
+    if(front==NULL && rear==NULL)
     {
-        printf("\nQUEUE UNDERFLOW");
-    }
-    else if(f==r)
-    {
-        f=r=-1;
+        printf("\n QUEUE Empty");
     }
     else
     {
-        printf("\nItem deleted is %d ",queue[f]);
-        f++;
+        printf(" %d",front->data);
         
     }
 }
-void peek()
+struct node *display()
 {
-    if(f==-1 && r==-1)
+    struct node *temp;
+    temp=front;
+    if(front==NULL && rear==NULL)
     {
-        printf("\nNothing to display");
+        printf("\n QUEUE Empty");
     }
-    else
+    
+    while(temp!=NULL)
     {
-        printf("\nPEAK VALUE IS  %d ",queue[f]);
-    }
-}
-void display()
-{
-    if(f==-1 && r==-1)
-    {
-        printf("\nNothing to display");
-    }
-    for(int i=f;i<=r;i++)
-    {
-        printf("%d ",queue[i]);
+        printf("\n%d ",temp->data);
+        temp=temp->next;
     }
 }
 int main()
 {
     int ch,data;
-    
+    clrscr();
     do
     {
-        printf("\nEnter following keys\n1:ENQUEUE\n2:DEQUEUE\n3:peek\n4:display\n5:(0) to exit\t");
+        printf("\nEnter following keys\n1:ENQUEUE\n2:DEQUEUE\n3:PEAK\n4:display\n5:(0) to exit\t");
         scanf("%d",&ch);
         switch(ch)
         {
             case 1:
-            printf("\nEnter data\t ");
+            printf("\nEnter data\n");
             scanf("%d ",&data);
             enqueue(data);
             break;
@@ -80,7 +96,7 @@ int main()
             dequeue();
             break;
             case 3:
-            peek();
+            peak();
             break;
             case 4:
             display();
@@ -92,4 +108,3 @@ int main()
         while(ch!=0);
         ch=getchar();
 }
-
